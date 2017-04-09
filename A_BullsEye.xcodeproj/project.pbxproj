@@ -300,6 +300,7 @@
 				91DB19C81E99F63800736DC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
