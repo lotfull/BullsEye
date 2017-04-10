@@ -10,6 +10,7 @@
 		914984B21E9A971E00DF9A9F /* HoToPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914984B11E9A971E00DF9A9F /* HoToPlayViewController.swift */; };
 		918672991E9BAA3900B8A022 /* HoToPlay2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918672981E9BAA3900B8A022 /* HoToPlay2ViewController.swift */; };
 		918672A11E9BB6DE00B8A022 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = 918672A01E9BB6DE00B8A022 /* Notes */; };
+		91977D771E9BDB1F00F05DD1 /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91977D761E9BDB1F00F05DD1 /* RoundButton.swift */; };
 		91DB19B81E99F63800736DC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DB19B71E99F63800736DC3 /* AppDelegate.swift */; };
 		91DB19BA1E99F63800736DC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DB19B91E99F63800736DC3 /* ViewController.swift */; };
 		91DB19BD1E99F63800736DC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91DB19BB1E99F63800736DC3 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 		914984B11E9A971E00DF9A9F /* HoToPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoToPlayViewController.swift; sourceTree = "<group>"; };
 		918672981E9BAA3900B8A022 /* HoToPlay2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoToPlay2ViewController.swift; sourceTree = "<group>"; };
 		918672A01E9BB6DE00B8A022 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
+		91977D761E9BDB1F00F05DD1 /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
 		91DB19B41E99F63800736DC3 /* A_BullsEye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A_BullsEye.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91DB19B71E99F63800736DC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91DB19B91E99F63800736DC3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				91DB19BE1E99F63800736DC3 /* Assets.xcassets */,
 				91DB19C31E99F63800736DC3 /* Info.plist */,
 				918672A01E9BB6DE00B8A022 /* Notes */,
+				91977D761E9BDB1F00F05DD1 /* RoundButton.swift */,
 			);
 			path = A_BullsEye;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				914984B21E9A971E00DF9A9F /* HoToPlayViewController.swift in Sources */,
+				91977D771E9BDB1F00F05DD1 /* RoundButton.swift in Sources */,
 				918672991E9BAA3900B8A022 /* HoToPlay2ViewController.swift in Sources */,
 				91DB19BA1E99F63800736DC3 /* ViewController.swift in Sources */,
 				91DB19B81E99F63800736DC3 /* AppDelegate.swift in Sources */,
