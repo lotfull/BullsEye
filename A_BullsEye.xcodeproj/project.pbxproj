@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		914984B21E9A971E00DF9A9F /* HoToPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914984B11E9A971E00DF9A9F /* HoToPlayViewController.swift */; };
 		918672991E9BAA3900B8A022 /* HoToPlay2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918672981E9BAA3900B8A022 /* HoToPlay2ViewController.swift */; };
-		9186729F1E9BAB7000B8A022 /* BullsEye.html in Resources */ = {isa = PBXBuildFile; fileRef = 9186729E1E9BAB7000B8A022 /* BullsEye.html */; };
 		918672A11E9BB6DE00B8A022 /* Notes in Resources */ = {isa = PBXBuildFile; fileRef = 918672A01E9BB6DE00B8A022 /* Notes */; };
 		91DB19B81E99F63800736DC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DB19B71E99F63800736DC3 /* AppDelegate.swift */; };
 		91DB19BA1E99F63800736DC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DB19B91E99F63800736DC3 /* ViewController.swift */; };
@@ -20,7 +19,6 @@
 /* Begin PBXFileReference section */
 		914984B11E9A971E00DF9A9F /* HoToPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoToPlayViewController.swift; sourceTree = "<group>"; };
 		918672981E9BAA3900B8A022 /* HoToPlay2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoToPlay2ViewController.swift; sourceTree = "<group>"; };
-		9186729E1E9BAB7000B8A022 /* BullsEye.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = BullsEye.html; sourceTree = "<group>"; };
 		918672A01E9BB6DE00B8A022 /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes; sourceTree = "<group>"; };
 		91DB19B41E99F63800736DC3 /* A_BullsEye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = A_BullsEye.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91DB19B71E99F63800736DC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,7 +62,6 @@
 				91DB19B91E99F63800736DC3 /* ViewController.swift */,
 				914984B11E9A971E00DF9A9F /* HoToPlayViewController.swift */,
 				918672981E9BAA3900B8A022 /* HoToPlay2ViewController.swift */,
-				9186729E1E9BAB7000B8A022 /* BullsEye.html */,
 				91DB19BB1E99F63800736DC3 /* Main.storyboard */,
 				91DB19BE1E99F63800736DC3 /* Assets.xcassets */,
 				91DB19C31E99F63800736DC3 /* Info.plist */,
@@ -134,7 +131,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				918672A11E9BB6DE00B8A022 /* Notes in Resources */,
-				9186729F1E9BAB7000B8A022 /* BullsEye.html in Resources */,
 				91DB19BF1E99F63800736DC3 /* Assets.xcassets in Resources */,
 				91DB19BD1E99F63800736DC3 /* Main.storyboard in Resources */,
 			);

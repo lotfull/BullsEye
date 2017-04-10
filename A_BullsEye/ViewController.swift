@@ -36,12 +36,9 @@ class ViewController: UIViewController {
         if score > highscore {
             highscore = score
             isHighscore += 1
-            
-            
             let highscoreDefault = UserDefaults.standard
             highscoreDefault.setValue(highscore, forKey: "highscore")
             highscoreDefault.synchronize()
-            
         }
     }
     
@@ -64,16 +61,12 @@ class ViewController: UIViewController {
         ScoreLabel.text = String(score)
         RoundLabel.text = String(round)
         if isHighscore > 0 {
-            
             if isHighscore == 1 { highscoreAlert() }
             highscoreLabel.text = String(score)
         }
     }
     
     private func setSliderDesign() {
-        slider.setThumbImage(#imageLiteral(resourceName: "SliderThumb-Normal"), for: .normal)
-        slider.setThumbImage(#imageLiteral(resourceName: "SliderThumb-Highlighted"), for: .highlighted)
-        
         let insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
         let trackLeftResizable = #imageLiteral(resourceName: "SliderTrackLeft").resizableImage(withCapInsets: insets)
         let trackRightResizable = #imageLiteral(resourceName: "SliderTrackRight").resizableImage(withCapInsets: insets)
@@ -150,6 +143,9 @@ class ViewController: UIViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+
+    @IBOutlet weak var backgroundImage: UIImageView!
     
-    }
+    
+}
 
