@@ -94,14 +94,25 @@ class ViewController: UIViewController {
             style: .default,
             handler: {
                 action in
-                    if !self.isHighscore {
-                        self.QGameBadEndAlert()
-                    } else {
-                        self.QGameGoodEndAlert()
-                    }
-                    self.startNewGame()
-            })
+                if !self.isHighscore {
+                    self.QGameBadEndAlert()
+                } else {
+                    self.QGameGoodEndAlert()
+                }
+                self.startNewGame()
+        })
     }
+    private func CongratsWithHighScoreAction() -> UIAlertAction {
+        return UIAlertAction(
+            title: "New Highscore!",
+            style: .default,
+            handler: {
+                action in
+                self.QGameGoodEndAlert()
+                self.QGameStartRound()
+        })
+    }
+
     private func QGameBadEndAlert() {
         let message = "Your score \(score)\nThe score to beat: \(highscore)"
         let alert = UIAlertController(
@@ -129,35 +140,62 @@ class ViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    private func cleanHighscore(forKey: String) {
+        let defaults = UserDefaults.standard
+        defaults.setValue(0, forKey: forKey)
+        defaults.synchronize()
+    }
+    
     @IBAction func MainButtonPressed() {
         if gameType == QualityGame
         {
             calculateRoundScore()
+            score += roundScore
             if round == QGRoundsQuantity {
                 QRoundEndAlert(withAction: ShowGameResultsAction())
+            } else if score > highscore {
+                QRoundEndAlert(withAction: CongratsWithHighScoreAction())
+            } else {
+                QRoundEndAlert(withAction: nextRoundAction())
             }
-            QRoundEndAlert(withAction: nextRoundAction())
-            score += roundScore
             round += 1;
             if score > highscore {
                 if !isHighscore { highscoreAlert() }
                 highscore = score
                 isHighscore = true
                 let defaults = UserDefaults.standard
-                defaults.setValue(highscore, forKey: "highscore")
+                defaults.setValue(highscore, forKey: "qhighscore")
                 defaults.synchronize()
             }
+        }
+    }
+    
+    private func setHighscoreValueFromDefaults(forKey: String) {
+        if let testHighscore = UserDefaults.standard.value(forKey: forKey) {
+            highscore = testHighscore as! Int
+            highscoreLabel.text = String(highscore)
+        }
+    }
+    
+    private func changeHighscore(to GameType: Bool) {
+        switch GameType {
+        case QualityGame:
+            print("Qiality Game highscore")
+            highscoreTypeLabel.text = "Quality Game\nHighscore:"
+            setHighscoreValueFromDefaults(forKey: "qhighscore")
+        case TimeGame:
+            print("Time Game Highscore")
+            highscoreTypeLabel.text = "Time Game\nHighscore:"
+            setHighscoreValueFromDefaults(forKey: "thighscore")
+        default:
+            print("Highscore game error")
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        cleanHighscore(forKey: "qhighscore")
         sliderValueLabel.isHidden = true
-        let defaults = UserDefaults.standard
-        if let testHighscore = defaults.value(forKey: "highscore") {
-            highscore = testHighscore as! Int
-            highscoreLabel.text = String(highscore)
-        }
         setSliderDesign()
         startNewGame()
     }
@@ -165,8 +203,8 @@ class ViewController: UIViewController {
     private func startNewGame() {
         resetMainValues()
         gameType = GameSwitch.isOn
+        changeHighscore(to: gameType)
         if gameType == QualityGame {
-            changeHighscore(to: QualityGame)
             QGameStartRound()
         } else if gameType == TimeGame {
             TGameStart()
@@ -200,18 +238,10 @@ class ViewController: UIViewController {
             roundScore += 250
         }
     }
-    private func changeHighscore(to GameType: Bool) {
-        switch GameType {
-        case QualityGame:
-            print("Qiality Game highscore")
-            highscoreTypeLabel.text = "Quality Game\nHighscore:"
-        case TimeGame:
-            print("Time Game Highscore")
-            highscoreTypeLabel.text = "Time Game\nHighscore:"
-        default:
-            print("Highscore game error")
-        }
-    }
+    
+
+    
+    
     
     private func setTGameValues() {
         
