@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import QuartzCore
 
 class MainViewController: UIViewController {
     
@@ -69,6 +70,10 @@ class MainViewController: UIViewController {
     }
     private func setRandomValues() {
         aimValue = 1 + Int(arc4random_uniform(100))
+        while aimValue == 1 || aimValue == 100 {
+            aimValue = 1 + Int(arc4random_uniform(100))
+        }
+        
         defaultValue = (aimValue + 40 + Int(arc4random_uniform(20))) % 100
         slider.value = Float(defaultValue) // default slider value
         currentValue = defaultValue
@@ -101,6 +106,12 @@ class MainViewController: UIViewController {
     private func QGameStartRound() {
         QGamesetValues()
         QGamesetLabels()
+        
+        let transition = CATransition()
+        transition.type = kCATransitionFade
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        view.layer.add(transition, forKey: nil)
     }
     private func QGamesetValues() {
         setRandomValues()
@@ -119,6 +130,8 @@ class MainViewController: UIViewController {
         timeLeftNumberLabel.isHidden = true
         differenceLabel.text = (difference > 0) ?
             "(+\(difference)) : " : "(\(difference)) : "
+        
+        
     }
     private func QGameBadEndAlert() {
         let message = "Your score \(score)\nThe score to beat: \(lastHighscore)"
