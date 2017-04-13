@@ -12,26 +12,40 @@ class LeaderboardViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        QHighscoreLabel1.text = "\(qHighscoreArray[0]["score"]!)"
+        QHighscoreNameLabel1.text = "\(qHighscoreArray[0]["name"]!)"
+        QHighscoreLabel2.text = "\(qHighscoreArray[1]["score"]!)"
+        QHighscoreNameLabel2.text = "\(qHighscoreArray[1]["name"]!)"
+        QHighscoreLabel3.text = "\(qHighscoreArray[2]["score"]!)"
+        QHighscoreNameLabel3.text = "\(qHighscoreArray[2]["name"]!)"
+        QHighscoreLabel4.text = "\(qHighscoreArray[3]["score"]!)"
+        QHighscoreNameLabel4.text = "\(qHighscoreArray[3]["name"]!)"
+        QHighscoreLabel5.text = "\(qHighscoreArray[4]["score"]!)"
+        QHighscoreNameLabel5.text = "\(qHighscoreArray[4]["name"]!)"
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     @IBAction func closeLeaderboardButton(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBOutlet weak var QHighscoreLabel1: UILabel!
+    @IBOutlet weak var QHighscoreLabel2: UILabel!
+    @IBOutlet weak var QHighscoreLabel3: UILabel!
+    @IBOutlet weak var QHighscoreLabel4: UILabel!
+    @IBOutlet weak var QHighscoreLabel5: UILabel!
+    @IBOutlet weak var QHighscoreNameLabel1: UILabel!
+    @IBOutlet weak var QHighscoreNameLabel2: UILabel!
+    @IBOutlet weak var QHighscoreNameLabel3: UILabel!
+    @IBOutlet weak var QHighscoreNameLabel4: UILabel!
+    @IBOutlet weak var QHighscoreNameLabel5: UILabel!
+    
+    var qHighscoreArray = [[String: Any]]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
-    */
-
+    
+    private func QHighscorersLoad() {
+        
+    }
 }

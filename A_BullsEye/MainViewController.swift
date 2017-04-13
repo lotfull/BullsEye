@@ -8,16 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     // MARK: - Main functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setDefaultValue( defaultQHighscoreArrayOfDict, forKey: "qhighscoredict")
+        //setDefaultValue(defaultQHighscoreArrayOfDict10, forKey: QGHighscoreKey + "10")
+        //setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
+        //setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")
         sliderValueLabel.isHidden = true
         setSliderDesign()
         startNewGame()
+        VSGameButton.isEnabled = false
+        TGameButton.isEnabled = false
     }
     private func startNewGame() {
         resetMainValues()
@@ -37,6 +41,10 @@ class ViewController: UIViewController {
     private func setGameTypeByGameButton(withLabel labelText: String) -> Int {
         switch labelText {
         case "Quality":
+            iter += 1
+            iter %= QRoundsQuantitiesArray.count
+            QRoundsQuantity = QRoundsQuantitiesArray[iter]
+            QRoundsQuantityLabel.text = "\(QRoundsQuantity)"
             return QGame
         case "Time":
             return TGame
@@ -53,7 +61,8 @@ class ViewController: UIViewController {
         roundScore = 0
         currentStreak = 0
         isHighscore = false
-        bonusLabelHidden(true)
+        roundScoreLabelHidden(true)
+        
     }
     private func setRandomValues() {
         aimValue = 1 + Int(arc4random_uniform(100))
@@ -62,12 +71,13 @@ class ViewController: UIViewController {
         currentValue = defaultValue
     }
     private func calculateQGameRoundScore() {
-        difference = abs(aimValue - currentValue)
-        switch difference {
+        difference = currentValue - aimValue
+        absDifference = abs(difference)
+        switch absDifference {
         case 0...20:
-            roundScore = (10 * Int(pow(pow100in3_5 - Double(difference), 1/power)) + bonus * currentStreak)
+            roundScore = 10 * Int(pow(pow100in3_5 - Double(absDifference), 1/power))
             print(roundScore)
-            switch difference {
+            switch absDifference {
             case 0:
                 currentStreak += 2
             case 1:
@@ -76,12 +86,12 @@ class ViewController: UIViewController {
                 currentStreak = 0
             }
         case 21..<100:
-            roundScore = (100 - difference) / 3 + bonus * currentStreak
+            roundScore = (100 - absDifference) / 3
             currentStreak = 0
         default:
             break
         }
-        bonusLabelHidden(currentStreak == 0)
+        bonusScoreLabelHidden(currentStreak == 0)
     }
 
     // MARK: - Qgame
@@ -95,15 +105,18 @@ class ViewController: UIViewController {
     private func QGamesetLabels() {
         aimLabel.text = String(aimValue)
         ScoreLabel.text = String(score)
-        RoundLabel.text = "\(round) of \(QGRoundsQuantity)"
-        
+        RoundLabel.text = "\(round) of \(QRoundsQuantity)"
+        //QGameRoundNumberButton.titleLabel?.text = "\(QRoundsQuantitiesArray[iter])"
+
         if isHighscore {
             highscoreLabel.text = "\(highscoreName) \(highscoreScore)"
         }
-        bonusLabelHidden(currentStreak == 0)
+        roundScoreLabelHidden(round == 1)
+        bonusScoreLabelHidden(currentStreak == 0)
         roundScoreLabel.text = "+ \(roundScore)"
         timeLeftTextLabel.isHidden = true
         timeLeftNumberLabel.isHidden = true
+        differenceLabel.text = (difference > 0) ? "(+\(difference)) : " : "(\(difference)) : "
     }
     
     private func QRoundEndAlert(withAction action: UIAlertAction) {
@@ -116,22 +129,26 @@ class ViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     private func QGameBadEndAlert() {
-        let message = "Your score \(score)\nThe score to beat: \(highscore)"
+        let message = "Your score \(score)\nThe score to beat: \(lastHighscore)"
         let alert = UIAlertController(
-            title: "Quality game over!",
+            title: "Game over!",
             message: message,
             preferredStyle: .alert)
         let action = UIAlertAction(
-            title: "Ok",
+            title: "OK",
             style: .default,
-            handler: nil)
+            handler: {
+                (_) in
+                self.startNewGame()
+        })
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-    private func QGameGoodEndAlert() {
-        let message = "Your made new highscore: \(score)\nEnter your name!"
+    private func QGameGoodEndAlert(message: String) {
+        
+        let message = "Your made new \(message): \(score)\nEnter your name!"
         let alert = UIAlertController(
-            title: "Highscore # \(highScorePos)!",
+            title: "Highscore!",
             message: message,
             preferredStyle: .alert)
         let action = UIAlertAction(
@@ -139,11 +156,7 @@ class ViewController: UIViewController {
                 [weak alert] (_) in
                 let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
                 print("Text field: \(textField.text!)")
-                if self.highScorePos == 1 {
-                    self.highscoreName = textField.text!
-                    self.highscoreScore = self.score
-                }
-                self.addHighscoreToDefaultsForKey("qhighscoredict", score: self.score, name: textField.text!)
+                self.addHighscoreToDefaultsForKey(self.QGHighscoreKey + "\(self.QRoundsQuantity)", score: self.score, name: textField.text!)
                 self.startNewGame()
             })
         alert.addTextField { (textField) in textField.text = "" }
@@ -157,7 +170,7 @@ class ViewController: UIViewController {
         switch GameType {
         case QGame:
             highscoreTypeLabel.text = "Quality Game\nHighscore:"
-            getHighscoreArrayFromDefaults(forKey: "qhighscoredict")
+            getHighscoreArrayFromDefaults(forKey: QGHighscoreKey + "\(QRoundsQuantity)")
         case TGame:
             highscoreTypeLabel.text = "Time Game\nHighscore:"
             getHighscoreArrayFromDefaults(forKey: "thighscoredict")
@@ -168,11 +181,12 @@ class ViewController: UIViewController {
             print("changeHighscore() default case")
         }
     }
-    private func getHighscoreArrayFromDefaults(forKey: String) {
+    func getHighscoreArrayFromDefaults(forKey: String) {
         if  let testHighscoreDict = UserDefaults.standard.array(forKey: forKey),
             let highscoreDict = testHighscoreDict as? [[String: Any]] {
             currentHighscoreArrayOfDict = highscoreDict
             highscore = currentHighscoreArrayOfDict[0]
+            lastHighscore = currentHighscoreArrayOfDict[4]["score"] as! Int
             if let HighscoreName = highscore["name"] as? String, let HighscoreScore = highscore["score"] as? Int {
                 highscoreName = HighscoreName
                 highscoreScore = HighscoreScore
@@ -185,6 +199,8 @@ class ViewController: UIViewController {
             print("askHighscoreArrayFromDefaults ERR")
         }
     }
+    
+    
     private func scoreSorting(_ dict1: [String: Any], _ dict2: [String: Any]) -> Bool {
         if let score1 = dict1["score"] as? Int,
             let score2 = dict2["score"] as? Int {
@@ -199,7 +215,7 @@ class ViewController: UIViewController {
         currentHighscoreArrayOfDict.removeLast()
         currentHighscoreArrayOfDict.append(newHighscore)
         currentHighscoreArrayOfDict.sort(by: scoreSorting)
-        setDefaultValue(currentHighscoreArrayOfDict, forKey: "qhighscoredict")
+        setDefaultValue(currentHighscoreArrayOfDict, forKey: QGHighscoreKey + "\(QRoundsQuantity)")
         highscoreLabel.text = "\(highscoreName) \(highscoreScore)"
     }
     private func highscoreAlert() {
@@ -218,6 +234,17 @@ class ViewController: UIViewController {
     private func askForName() -> String {
         return "TestName"
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationViewController = segue.destination
+        if let leaderboardVC = destinationViewController as? LeaderboardViewController {
+            leaderboardVC.qHighscoreArray = currentHighscoreArrayOfDict
+        }
+    }
+    
+    
+    
+    
     
     // MARK: - Alerts and alert actions
     private func nextRoundAction() -> UIAlertAction {
@@ -242,19 +269,17 @@ class ViewController: UIViewController {
                 self.startNewGame()
         })
     }
-    private func CongratsWithHighScoreAction() -> UIAlertAction {
-        return UIAlertAction(
-            title: "New Highscore!",
-            style: .default,
-            handler: {
-                action in
-                self.QGameGoodEndAlert()
-                self.QGameStartRound()
-        })
-    }
 
     // MARK: - Design
-    private func bonusLabelHidden(_ bool: Bool) {
+    private func roundScoreLabelHidden(_ bool: Bool) {
+        /*bonusNumberLabel.isHidden = bool
+        bonusTextLabel.isHidden = bool
+        bonusNumberLabel.text = "\(currentStreak)"*/
+        differenceLabel.isHidden = bool
+        roundScoreLabel.isHidden = bool
+    }
+    
+    private func bonusScoreLabelHidden(_ bool: Bool) {
         bonusNumberLabel.isHidden = bool
         bonusTextLabel.isHidden = bool
         bonusNumberLabel.text = "\(currentStreak)"
@@ -264,6 +289,7 @@ class ViewController: UIViewController {
         switch gameType {
         case QGame:
             QGameButton.backgroundColor? = (QGameButton.backgroundColor?.withAlphaComponent(0.4))!
+            QRoundsQuantityLabel.backgroundColor? = (QRoundsQuantityLabel.backgroundColor?.withAlphaComponent(0.4))!
         case TGame:
             TGameButton.backgroundColor? = (TGameButton.backgroundColor?.withAlphaComponent(0.4))!
         case VSGame:
@@ -277,6 +303,7 @@ class ViewController: UIViewController {
         switch gameType {
         case QGame:
             QGameButton.backgroundColor? = (QGameButton.backgroundColor?.withAlphaComponent(1))!
+            QRoundsQuantityLabel.backgroundColor? = (QRoundsQuantityLabel.backgroundColor?.withAlphaComponent(1))!
         case TGame:
             TGameButton.backgroundColor? = (TGameButton.backgroundColor?.withAlphaComponent(1))!
         case VSGame:
@@ -350,15 +377,18 @@ class ViewController: UIViewController {
         switch gameType {
         case QGame:
             calculateQGameRoundScore()
-            score += roundScore
-            if round == QGRoundsQuantity {
+            score += roundScore + bonus * currentStreak
+            if round == QRoundsQuantity {
                 if score > highscore["score"] as! Int {
-                    QGameGoodEndAlert()
+                    QGameGoodEndAlert(message: "Best Highscore")
+                } else if score > lastHighscore {
+                    QGameGoodEndAlert(message: "Highscore")
                 } else {
                     QGameBadEndAlert()
                 }
-            } //else { QRoundEndAlert(withAction: nextRoundAction()) }
-            round += 1;
+            } else {
+                round += 1;
+            }
             if score > highscore["score"] as! Int {
                 /*if !isHighscore { highscoreAlert() }
                 highscore["score"] = score
@@ -372,10 +402,6 @@ class ViewController: UIViewController {
         default:
             print("Another game type, not installed")
         }
-        
-        if gameType == QGame
-        {
-                    }
     }
     
     // MARK: - Outlets
@@ -393,9 +419,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var VSGameButton: UIButton!
     @IBOutlet weak var timeLeftTextLabel: UILabel!
     @IBOutlet weak var timeLeftNumberLabel: UILabel!
-    
+    @IBOutlet weak var differenceLabel: UILabel!
     @IBOutlet weak var bonusNumberLabel: UILabel!
     @IBOutlet weak var bonusTextLabel: UILabel!
+    @IBOutlet weak var QRoundsQuantityLabel: UILabel!
+    
     // MARK: - var stack
     var defaultValue = 50
     var currentValue: Int = 0
@@ -404,23 +432,31 @@ class ViewController: UIViewController {
     var score: Int = 0
     var roundScore: Int = 0
     var difference: Int = 0
+    var absDifference: Int = 0
     var gameType = 1 //
     let QGame = 1
     let TGame = 0
     let VSGame = 2
-    let QGRoundsQuantity: Int = 10
-    //var minHighscore = 0
+    var QRoundsQuantity: Int = 10
+    var lastHighscore = 0
     var highscore: [String: Any] = ["score": 0, "name" : "None"]
     var isHighscore = false
     var highscoreName = "None"
     var highscoreScore = 0
     var QHighscoreArrayOfDict : [[String: Any]] = []
-    let defaultQHighscoreArrayOfDict : [[String: Any]] = [
-        ["score": 1000, "name" :  "Kam"],
-        ["score": 200, "name" :  "Lotfull"],
-        ["score": 50, "name" :  "Nikita"],
-        ["score": 150, "name" :  "Darina"],
-        ["score": 100, "name" :  "Lyokha"]
+    let defaultQHighscoreArrayOfDict10 : [[String: Any]] = [
+        ["name": "Lotfull", "score": 9910],
+        ["name": "KamMachine", "score": 8850],
+        ["name": "hustleartem", "score": 8820],
+        ["name": "Kam", "score": 8640],
+        ["name": "Kam", "score": 8200]
+    ]
+    let defaultCleanQHighscoreArrayOfDict : [[String: Any]] = [
+        ["name": "Tinky", "score": 2000],
+        ["name": "Winky", "score": 1500],
+        ["name": "Lylya", "score": 1000],
+        ["name": "Po", "score": 500],
+        ["name": "Lysyi", "score": 100]
     ]
     var currentHighscoreArrayOfDict : [[String: Any]] = []
     var pow100in3_5 = pow(100.01, (3.0/5))
@@ -428,5 +464,8 @@ class ViewController: UIViewController {
     var currentStreak = 0
     var bonus = 50
     var highScorePos = 1
+    let QGHighscoreKey = "qhighscoredict"
+    let QRoundsQuantitiesArray = [5, 7, 10]
+    var iter = 2;
 }
 
