@@ -14,9 +14,9 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setDefaultValue(defaultQHighscoreArrayOfDict10, forKey: QGHighscoreKey + "10")
-        //setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
-        //setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")
+        /*setDefaultValue(defaultQHighscoreArrayOfDict10, forKey: QGHighscoreKey + "10")
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")*/
         sliderValueLabel.isHidden = true
         setSliderDesign()
         startNewGame()
@@ -38,13 +38,16 @@ class MainViewController: UIViewController {
             print("switch gametype default")
         }
     }
+    private func ChangeQRoundsQuantity() {
+        iter += 1
+        iter %= QRoundsQuantitiesArray.count
+        QRoundsQuantity = QRoundsQuantitiesArray[iter]
+        QRoundsQuantityLabel.text = "\(QRoundsQuantity)"
+    }
     private func setGameTypeByGameButton(withLabel labelText: String) -> Int {
         switch labelText {
         case "Quality":
-            iter += 1
-            iter %= QRoundsQuantitiesArray.count
-            QRoundsQuantity = QRoundsQuantitiesArray[iter]
-            QRoundsQuantityLabel.text = "\(QRoundsQuantity)"
+            ChangeQRoundsQuantity()
             return QGame
         case "Time":
             return TGame
@@ -106,8 +109,6 @@ class MainViewController: UIViewController {
         aimLabel.text = String(aimValue)
         ScoreLabel.text = String(score)
         RoundLabel.text = "\(round) of \(QRoundsQuantity)"
-        //QGameRoundNumberButton.titleLabel?.text = "\(QRoundsQuantitiesArray[iter])"
-
         if isHighscore {
             highscoreLabel.text = "\(highscoreName) \(highscoreScore)"
         }
@@ -116,17 +117,8 @@ class MainViewController: UIViewController {
         roundScoreLabel.text = "+ \(roundScore)"
         timeLeftTextLabel.isHidden = true
         timeLeftNumberLabel.isHidden = true
-        differenceLabel.text = (difference > 0) ? "(+\(difference)) : " : "(\(difference)) : "
-    }
-    
-    private func QRoundEndAlert(withAction action: UIAlertAction) {
-        let message = "The value of slider is: \(currentValue)\nThe aim was: \(aimValue)"
-        let alert = UIAlertController(
-            title: "\(roundScore) points!",
-            message: message,
-            preferredStyle: .alert)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        differenceLabel.text = (difference > 0) ?
+            "(+\(difference)) : " : "(\(difference)) : "
     }
     private func QGameBadEndAlert() {
         let message = "Your score \(score)\nThe score to beat: \(lastHighscore)"
@@ -199,8 +191,6 @@ class MainViewController: UIViewController {
             print("askHighscoreArrayFromDefaults ERR")
         }
     }
-    
-    
     private func scoreSorting(_ dict1: [String: Any], _ dict2: [String: Any]) -> Bool {
         if let score1 = dict1["score"] as? Int,
             let score2 = dict2["score"] as? Int {
@@ -218,23 +208,6 @@ class MainViewController: UIViewController {
         setDefaultValue(currentHighscoreArrayOfDict, forKey: QGHighscoreKey + "\(QRoundsQuantity)")
         highscoreLabel.text = "\(highscoreName) \(highscoreScore)"
     }
-    private func highscoreAlert() {
-        let message = "\nKing of the Bull's eye!"
-        let alert = UIAlertController(
-            title: "HighScore!",
-            message: message,
-            preferredStyle: .alert)
-        let action = UIAlertAction(
-            title: "Continue",
-            style: .default,
-            handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    private func askForName() -> String {
-        return "TestName"
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationViewController = segue.destination
         if let leaderboardVC = destinationViewController as? LeaderboardViewController {
@@ -242,49 +215,18 @@ class MainViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    
     // MARK: - Alerts and alert actions
-    private func nextRoundAction() -> UIAlertAction {
-        return UIAlertAction(
-            title: "Next round",
-            style: .default,
-            handler: {
-                action in
-                self.QGameStartRound()
-        })
-        
-    }
-    private func ShowGameResultsAction() -> UIAlertAction {
-        return UIAlertAction(
-            title: "Show results",
-            style: .default,
-            handler: {
-                action in
-                if self.isHighscore {
-                    self.highscoreAlert()
-                }
-                self.startNewGame()
-        })
-    }
 
     // MARK: - Design
     private func roundScoreLabelHidden(_ bool: Bool) {
-        /*bonusNumberLabel.isHidden = bool
-        bonusTextLabel.isHidden = bool
-        bonusNumberLabel.text = "\(currentStreak)"*/
         differenceLabel.isHidden = bool
         roundScoreLabel.isHidden = bool
     }
-    
     private func bonusScoreLabelHidden(_ bool: Bool) {
         bonusNumberLabel.isHidden = bool
         bonusTextLabel.isHidden = bool
         bonusNumberLabel.text = "\(currentStreak)"
     }
-    
     private func setNormalColorToLastGameButton() {
         switch gameType {
         case QGame:
@@ -390,13 +332,8 @@ class MainViewController: UIViewController {
                 round += 1;
             }
             if score > highscore["score"] as! Int {
-                /*if !isHighscore { highscoreAlert() }
-                highscore["score"] = score
-                highscore["name"] = askForName()
-                isHighscore = true*/
                 highscoreScore = score
                 highscoreLabel.text = "Your score \(score)"
-                //addQHighscoreToDict(score: highscore["score"] as! Int, name: highscore["name"] as! String)
             }
             self.QGameStartRound()
         default:
@@ -444,13 +381,7 @@ class MainViewController: UIViewController {
     var highscoreName = "None"
     var highscoreScore = 0
     var QHighscoreArrayOfDict : [[String: Any]] = []
-    let defaultQHighscoreArrayOfDict10 : [[String: Any]] = [
-        ["name": "Lotfull", "score": 9910],
-        ["name": "KamMachine", "score": 8850],
-        ["name": "hustleartem", "score": 8820],
-        ["name": "Kam", "score": 8640],
-        ["name": "Kam", "score": 8200]
-    ]
+    let defaultQHighscoreArrayOfDict10 = [[String: Any]]()
     let defaultCleanQHighscoreArrayOfDict : [[String: Any]] = [
         ["name": "Tinky", "score": 2000],
         ["name": "Winky", "score": 1500],
