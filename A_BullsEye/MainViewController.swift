@@ -13,11 +13,20 @@ class MainViewController: UIViewController {
     
     // MARK: - Main functions
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("viewDidAppear")
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("viewDidLayoutSubviews")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*setDefaultValue(defaultQHighscoreArrayOfDict10, forKey: QGHighscoreKey + "10")
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "10")
         setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
-        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")*/
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")
         sliderValueLabel.isHidden = true
         setSliderDesign()
         startNewGame()
@@ -175,7 +184,9 @@ class MainViewController: UIViewController {
         switch GameType {
         case QGame:
             highscoreTypeLabel.text = "Quality Game\nHighscore:"
-            getHighscoreArrayFromDefaults(forKey: QGHighscoreKey + "\(QRoundsQuantity)")
+            let key = QGHighscoreKey + "\(QRoundsQuantity)"
+            print(key)
+            getHighscoreArrayFromDefaults(forKey: key)
         case TGame:
             highscoreTypeLabel.text = "Time Game\nHighscore:"
             getHighscoreArrayFromDefaults(forKey: "thighscoredict")
@@ -186,8 +197,8 @@ class MainViewController: UIViewController {
             print("changeHighscore() default case")
         }
     }
-    func getHighscoreArrayFromDefaults(forKey: String) {
-        if  let testHighscoreDict = UserDefaults.standard.array(forKey: forKey),
+    func getHighscoreArrayFromDefaults(forKey key: String) {
+        if  let testHighscoreDict = UserDefaults.standard.array(forKey: key),
             let highscoreDict = testHighscoreDict as? [[String: Any]] {
             currentHighscoreArrayOfDict = highscoreDict
             highscore = currentHighscoreArrayOfDict[0]
