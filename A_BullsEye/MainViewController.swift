@@ -9,7 +9,7 @@
 import UIKit
 import QuartzCore
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, resetHighscoresDelegate {
     
     // MARK: - Main functions
     
@@ -24,9 +24,9 @@ class MainViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "10")
-        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
-        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")
+        if UserDefaults.standard.bool(forKey: "AppHasHighscores") == false {
+            resetHighscores()
+        }
         sliderValueLabel.isHidden = true
         setSliderDesign()
         startNewGame()
@@ -224,6 +224,15 @@ class MainViewController: UIViewController {
             return true
         }
     }
+    internal func resetHighscores(_ newGameStart: Bool = false) {
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "10")
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "7")
+        setDefaultValue(defaultCleanQHighscoreArrayOfDict, forKey: QGHighscoreKey + "5")
+        UserDefaults.standard.set(true, forKey: "AppHasHighscores")
+        if newGameStart {
+            startNewGame()
+        }
+    }
     private func addHighscoreToDefaultsForKey(_ key: String, score: Int, name: String) {
         let newHighscore: [String : Any] = ["score": score, "name" : name]
         currentHighscoreArrayOfDict.removeLast()
@@ -236,6 +245,7 @@ class MainViewController: UIViewController {
         let destinationViewController = segue.destination
         if let leaderboardVC = destinationViewController as? LeaderboardViewController {
             leaderboardVC.qHighscoreArray = currentHighscoreArrayOfDict
+            leaderboardVC.delegate = self
         }
     }
     
@@ -409,9 +419,9 @@ class MainViewController: UIViewController {
     let defaultCleanQHighscoreArrayOfDict : [[String: Any]] = [
         ["name": "Tinky", "score": 2000],
         ["name": "Winky", "score": 1500],
-        ["name": "Lylya", "score": 1000],
-        ["name": "Po", "score": 500],
-        ["name": "Lysyi", "score": 100]
+        ["name": "Dipcy", "score": 1000],
+        ["name": "Lyalya", "score": 500],
+        ["name": "Po", "score": 100]
     ]
     var currentHighscoreArrayOfDict : [[String: Any]] = []
     var pow100in3_5 = pow(100.01, (3.0/5))

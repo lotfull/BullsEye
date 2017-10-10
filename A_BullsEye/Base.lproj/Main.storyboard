@@ -593,16 +593,29 @@ Enjoy!</string>
                                     <action selector="closeLeaderboardButton:" destination="04o-kx-ZIL" eventType="touchUpInside" id="Hnl-Zf-18T"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MiO-Lu-4n3">
+                                <rect key="frame" x="433" y="20" width="115" height="32"/>
+                                <color key="backgroundColor" red="0.043863194719999998" green="0.0" blue="0.14671035639999999" alpha="0.40166884819999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="14"/>
+                                <state key="normal" title="Reset Highscores">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetHighscoresButtonPressed" destination="04o-kx-ZIL" eventType="touchUpInside" id="G5D-Vj-fJS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jGF-Hi-iFb" firstAttribute="centerX" secondItem="tcL-PE-sQ8" secondAttribute="centerX" id="6xK-3D-Ufn"/>
                             <constraint firstAttribute="trailingMargin" secondItem="BXT-3V-tRH" secondAttribute="trailing" constant="30" id="ADg-Tz-EGf"/>
+                            <constraint firstItem="MiO-Lu-4n3" firstAttribute="top" secondItem="vEc-Us-E5r" secondAttribute="bottom" constant="20" id="EgX-pH-OtD"/>
                             <constraint firstItem="P7q-Gq-hZT" firstAttribute="centerX" secondItem="tcL-PE-sQ8" secondAttribute="centerX" id="Pb0-XB-pZt"/>
                             <constraint firstItem="jGF-Hi-iFb" firstAttribute="top" secondItem="tcL-PE-sQ8" secondAttribute="topMargin" constant="60" id="QeI-7k-efo"/>
                             <constraint firstItem="BXT-3V-tRH" firstAttribute="leading" secondItem="tcL-PE-sQ8" secondAttribute="leadingMargin" constant="30" id="bvX-Yh-SUS"/>
                             <constraint firstItem="P7q-Gq-hZT" firstAttribute="top" secondItem="tcL-PE-sQ8" secondAttribute="topMargin" constant="20" id="qxH-yr-gfo"/>
                             <constraint firstItem="sWh-eg-Eif" firstAttribute="top" secondItem="BXT-3V-tRH" secondAttribute="bottom" constant="20" id="v4E-6f-RhU"/>
+                            <constraint firstItem="MiO-Lu-4n3" firstAttribute="trailing" secondItem="tcL-PE-sQ8" secondAttribute="trailingMargin" id="vhq-qy-QeH"/>
                         </constraints>
                     </view>
                     <connections>

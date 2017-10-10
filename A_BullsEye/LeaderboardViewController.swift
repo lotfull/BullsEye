@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol resetHighscoresDelegate: class {
+    func resetHighscores(_ newGameStart: Bool)
+}
+
 class LeaderboardViewController: UIViewController {
+    
+    weak var delegate: resetHighscoresDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,10 +30,15 @@ class LeaderboardViewController: UIViewController {
         QHighscoreNameLabel5.text = "\(qHighscoreArray[4]["name"]!)"
     }
     
-    @IBAction func closeLeaderboardButton(_ sender: UIButton) {
+    @IBAction func closeLeaderboardButton(_ sender: Any?) {
         dismiss(animated: true, completion: nil)
     }
-
+    
+    @IBAction func resetHighscoresButtonPressed() {
+        delegate?.resetHighscores(true)
+        closeLeaderboardButton(nil)
+    }
+ 
     @IBOutlet weak var QHighscoreLabel1: UILabel!
     @IBOutlet weak var QHighscoreLabel2: UILabel!
     @IBOutlet weak var QHighscoreLabel3: UILabel!
